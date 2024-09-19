@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>My weather application</title>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>SheCodes</h2>
+        </header>
+        <form class="search-box" id="search-box" >
+            <input type="search" placeholder="Enter a city.." id = "city" required />
+            <input type="submit" id ="button" value="Search">
+        </form>
+        <main>
+            <div class="current-weather">
+                <div class ="info">
+                    <h1>Paris</h1>
+                    <div class="day-time">
+                        <h3>Saturday 15:32, moderate rain,</h3>
+                    </div>
+                    <div class = "humid-wind">
+                        <h3>Humidity: <strong>87%</strong>, Wind: <strong>7.2km/h</strong></h3>
+                    </div>
+                </div>
+                <div class="temp">
+                    ☁️14°C
+                </div>
+            </div>
+            <div class="forecast">
+                <div>
+                    <p>Sat</p>
+                    ☀️
+                    <p>16° 12°</p>
+                </div>
+                <div>
+                    <p>Sun</p>
+                    ☀️
+                    <p>16° 11°</p>
+                </div>
+                <div>
+                    <p>Mon</p>
+                    ☀️
+                    <p>15° 11°</p>
+                </div>
+                <div>
+                    <p>Tue</p>
+                    ☀️
+                    <p>16° 11°</p>
+                </div>
+                <div>
+                    <p>Wed</p>
+                    ☀️
+                    <p>18° 12°</p>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>
+                This project was coded by
+                <a href="#" target="_blank">Darshana Punna</a> and is
+                <a href="#" target="_blank"> open-sourced on GitHub</a> and
+                <a href="#" target="_blank">hosted on Netlify</a>
+            </p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
