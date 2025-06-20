@@ -1,5 +1,5 @@
 body {
-    background-image: url(globe.avif);
+    background-image: url(bgimg.jpg);
     background-size: cover;
     font-family: 'Arial', sans-serif;
     color: #333;
@@ -12,9 +12,9 @@ body {
 
 .container {
     text-align: center;
-    background:transparent;
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     max-width: 700px;
     width: 100%;
@@ -69,6 +69,11 @@ header h1 {
     font-size: 16px;
 }
 
+.search-box #button:hover {
+    background-color: white;
+    color: #7c4dff;
+}
+
 .current-weather {
     margin-bottom: 20px;
     display: flex;
@@ -103,7 +108,7 @@ header h1 {
 
 .forecast {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .forecast div {
@@ -113,11 +118,11 @@ header h1 {
 
 footer {
     font-size: 12px;
-    color: #999;
+    color: #0c0b0b;
 }
 
 footer a {
-    color: #7c4dff;
+    color: blue;
     text-decoration: none;
 }
 
