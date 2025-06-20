@@ -1,28 +1,33 @@
 let apiKey = "433fd0c3atb823990ocfd74fb81dcb04";
 
-// Main search function
+// Event handler for form submission
 function searching(event) {
   event.preventDefault();
-
   let cityname = document.querySelector("#city").value;
+  searchCity(cityname);
+}
+
+// Unified function to search weather for a city
+function searchCity(cityname) {
   let heading = document.querySelector(".current-weather .info h1");
   heading.innerHTML = `${cityname.charAt(0).toUpperCase() + cityname.slice(1)}`;
 
   let currentUrl = `https://api.shecodes.io/weather/v1/current?query=${cityname}&key=${apiKey}`;
   let forecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${cityname}&key=${apiKey}`;
 
+  // Current weather
   axios.get(currentUrl).then(response => {
-  ChangeTemp(response);
-  displayCityTime(response); // ✅ This one uses response.data.time
+    ChangeTemp(response);
+    displayCityTime(response);
   }).catch(handleError);
 
-
-  axios.get(forecastUrl).then(response => { 
+  // 5-day forecast
+  axios.get(forecastUrl).then(response => {
     displayForecast(response);
   }).catch(handleError);
 }
 
-// Show current temperature, humidity, and wind
+// Display temperature, humidity, and wind
 function ChangeTemp(response) {
   let currtemp = document.querySelector(".current-weather .temp");
   currtemp.innerHTML = `☁️ ${Math.round(response.data.temperature.current)}°C`;
@@ -38,8 +43,9 @@ function ChangeTemp(response) {
   `;
 }
 
+// Display local city time and condition
 function displayCityTime(response) {
-  const unixTime = response.data.time; // ✅ accurate local city time from SheCodes API
+  const unixTime = response.data.time;
   const condition = response.data.condition.description;
 
   if (!unixTime) {
@@ -47,20 +53,22 @@ function displayCityTime(response) {
     return;
   }
 
-  const cityDate = new Date(unixTime * 1000); // convert UNIX seconds → JS Date
+  const cityDate = new Date(unixTime * 1000);
 
   const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const day = weekDays[cityDate.getDay()];
-  const hour = cityDate.getHours().toString().padStart(2, "0");
+  
+  let hour = cityDate.getHours();
   const minutes = cityDate.getMinutes().toString().padStart(2, "0");
 
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+
   document.querySelector(".current-weather .day-time h3").innerHTML =
-    `${day} ${hour}:${minutes}, ${condition}`;
+    `${day} ${hour}:${minutes} ${ampm}, ${condition}`;
 }
 
-
-
-// Display next 5-day forecast
+// Display 5-day forecast
 function displayForecast(response) {
   let forecastData = response.data.daily.slice(1, 6); // Skip today
   let forecastContainer = document.querySelector(".forecast");
@@ -87,12 +95,50 @@ function displayForecast(response) {
   forecastContainer.innerHTML = forecastHTML;
 }
 
-// Show alert on error
+// Auto-detect user's location and load weather
+function autoDetectLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const geoUrl = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}`;
+        axios.get(geoUrl).then(response => {
+          const city = response.data.city;
+          document.querySelector("#city").value = city;
+          searchCity(city);
+        }).catch(error => {
+          console.error("Geo lookup failed:", error);
+          fallbackToDefault();
+        });
+      },
+      error => {
+        console.warn("Location access denied.");
+        fallbackToDefault();
+      }
+    );
+  } else {
+    fallbackToDefault();
+  }
+}
+
+// Fallback if location detection fails
+function fallbackToDefault() {
+  const defaultCity = "New Delhi";
+  document.querySelector("#city").value = defaultCity;
+  searchCity(defaultCity);
+}
+
+// Show error
 function handleError(error) {
   console.error("API Error:", error);
   alert("Could not fetch weather data. Please check the city name.");
 }
 
-// Attach event listener
+// Event listener for form
 let search = document.querySelector("#search-box");
 search.addEventListener("submit", searching);
+
+// On page load
+autoDetectLocation();
