@@ -19,6 +19,6 @@ This project is developed as part of the SheCodes training workshop.
 - [Axios](https://axios-http.com/) for API requests.
 - SheCodes Weather API  for weather data.
 
-This project is hosted using [Netify](https://darshana-weather-app.netlify.app/).
+This project is hosted using [Netlify](https://darshana-weather-app.netlify.app/).
 
 
